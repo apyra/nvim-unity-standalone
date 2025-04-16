@@ -25,9 +25,8 @@ jobs:
       # 2. Instala dependências necessárias (como jq, xcodebuild, etc)
       - name: Install dependencies
         run: |
-          brew install jq
+          brew list jq || brew install jq
           brew install make
-          brew install xcodebuild
 
       # 3. Cria a estrutura do App
       - name: Build the macOS app
@@ -44,6 +43,9 @@ jobs:
 
           # Converter ícone para .icns (opcional)
           iconutil --convert icns --output NvimUnity.app/Contents/Resources/nvimunity.icns NvimUnity.app/Contents/Resources/nvimunity.png || true
+      
+      - name: Check xcodebuild
+        run: xcodebuild -version
 
       # 4. Empacotar como DMG
       - name: Create DMG
