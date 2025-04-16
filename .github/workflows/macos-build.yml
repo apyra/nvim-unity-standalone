@@ -1,0 +1,60 @@
+name: Build macOS App
+
+on:
+  push:
+    branches:
+      - master
+    paths:
+      - 'nvim-unity-osx/**'
+  pull_request:
+    branches:
+      - master
+    paths:
+      - 'nvim-unity-osx/**'
+
+jobs:
+  build:
+    runs-on: macos-latest
+
+    steps:
+      # 1. Checa o código do repositório
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      # 2. Instala dependências necessárias (como jq, xcodebuild, etc)
+      - name: Install dependencies
+        run: |
+          brew install jq
+          brew install make
+          brew install xcodebuild || true
+
+      # 3. Cria a estrutura do App
+      - name: Build the macOS app
+        run: |
+          mkdir -p nvim-unity-osx/Contents/MacOS
+          mkdir -p nvim-unity-osx/Contents/Resources
+
+          cp install.sh nvim-unity-osx/Contents/MacOS/nvimunity
+          chmod +x nvim-unity-osx/Contents/MacOS/nvimunity
+
+          cp icons/nvimunity.png nvim-unity-osx/Contents/Resources/nvimunity.png
+
+          # Converter o ícone (opcional)
+          iconutil --convert icns --output nvim-unity-osx/Contents/Resources/nvimunity.icns nvim-unity-osx/Contents/Resources/nvimunity.png || true
+
+          cp -R nvim-unity-osx Contents/
+          mv Contents /tmp
+
+      # 4. Criar .dmg
+      - name: Create DMG
+        run: |
+          hdiutil create -volname "NvimUnity" -srcfolder /tmp/Contents -ov -format UDZO /tmp/nvim-unity.dmg
+
+      # 5. Fazer upload do .dmg
+      - name: Upload DMG artifact
+        uses: actions/upload-artifact@v2
+        with:
+          name: nvim-unity.dmg
+          path: /tmp/nvim-unity.dmg
+
+
