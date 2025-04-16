@@ -36,6 +36,7 @@ else
   CMD="$NVIM_PATH --listen $SOCKET \"+$LINE\" $FILE"
 fi
 
+
 # Executa
 eval "$CMD"
 
