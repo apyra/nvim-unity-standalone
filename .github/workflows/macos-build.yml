@@ -35,11 +35,11 @@ jobs:
           mkdir -p NvimUnity.app/Contents/Resources
 
           # Copia o script para o MacOS
-          cp install.sh NvimUnity.app/Contents/MacOS/nvimunity
+          cp nvim-unity-osx/install.sh NvimUnity.app/Contents/MacOS/nvimunity
           chmod +x NvimUnity.app/Contents/MacOS/nvimunity
 
           # Copia o ícone
-          cp icons/nvimunity.png NvimUnity.app/Contents/Resources/nvimunity.png
+          cp nvim-unity-osx/Contents/Resources/nvimunity.png NvimUnity.app/Contents/Resources/nvimunity.png
 
           # Converter ícone para .icns (opcional)
           iconutil --convert icns --output NvimUnity.app/Contents/Resources/nvimunity.icns NvimUnity.app/Contents/Resources/nvimunity.png || true
