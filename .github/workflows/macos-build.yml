@@ -1,6 +1,7 @@
 name: Build macOS App
 
 on:
+  workflow_dispatch:
   push:
     branches:
       - master
@@ -26,35 +27,33 @@ jobs:
         run: |
           brew install jq
           brew install make
-          brew install xcodebuild || true
+          brew install xcodebuild
 
       # 3. Cria a estrutura do App
       - name: Build the macOS app
         run: |
-          mkdir -p nvim-unity-osx/Contents/MacOS
-          mkdir -p nvim-unity-osx/Contents/Resources
+          mkdir -p NvimUnity.app/Contents/MacOS
+          mkdir -p NvimUnity.app/Contents/Resources
 
-          cp install.sh nvim-unity-osx/Contents/MacOS/nvimunity
-          chmod +x nvim-unity-osx/Contents/MacOS/nvimunity
+          # Copia o script para o MacOS
+          cp install.sh NvimUnity.app/Contents/MacOS/nvimunity
+          chmod +x NvimUnity.app/Contents/MacOS/nvimunity
 
-          cp icons/nvimunity.png nvim-unity-osx/Contents/Resources/nvimunity.png
+          # Copia o ícone
+          cp icons/nvimunity.png NvimUnity.app/Contents/Resources/nvimunity.png
 
-          # Converter o ícone (opcional)
-          iconutil --convert icns --output nvim-unity-osx/Contents/Resources/nvimunity.icns nvim-unity-osx/Contents/Resources/nvimunity.png || true
+          # Converter ícone para .icns (opcional)
+          iconutil --convert icns --output NvimUnity.app/Contents/Resources/nvimunity.icns NvimUnity.app/Contents/Resources/nvimunity.png || true
 
-          cp -R nvim-unity-osx Contents/
-          mv Contents /tmp
-
-      # 4. Criar .dmg
+      # 4. Empacotar como DMG
       - name: Create DMG
         run: |
-          hdiutil create -volname "NvimUnity" -srcfolder /tmp/Contents -ov -format UDZO /tmp/nvim-unity.dmg
+          hdiutil create -volname "NvimUnity" -srcfolder NvimUnity.app -ov -format UDZO /tmp/nvim-unity.dmg
 
-      # 5. Fazer upload do .dmg
+      # 5. Fazer upload do .dmg como artefato
       - name: Upload DMG artifact
         uses: actions/upload-artifact@v2
         with:
           name: nvim-unity.dmg
           path: /tmp/nvim-unity.dmg
-
 
