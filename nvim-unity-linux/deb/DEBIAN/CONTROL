@@ -1,0 +1,10 @@
+Package: nvimunity
+Version: 1.0.0
+Section: utils
+Priority: optional
+Architecture: amd64
+Depends: neovim
+Maintainer: Apyra <apyra@outolook.com.br>
+Description: NvimUnity - bridge between Neovim and Unity
+ A lightweight launcher that opens Unity projects inside Neovim via socket.
+
