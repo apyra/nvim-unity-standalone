@@ -1,0 +1,38 @@
+name: Build macOS App
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  build:
+    runs-on: macos-latest
+
+    steps:
+    - name: Check out repository
+      uses: actions/checkout@v2
+
+    - name: Install dependencies
+      run: |
+        brew install makensis
+
+    - name: Set up environment for macOS
+      run: |
+        # Crie o diretório do App
+        mkdir -p AppDir
+        cp -r ./* AppDir/
+
+    - name: Build the macOS App
+      run: |
+        # Copie o script .sh para AppDir
+        cp install.sh AppDir/
+        # Crie o bundle do macOS .app
+        osacompile -o AppDir/NvimUnity.app AppDir/install.sh
+
+    - name: Upload macOS app artifact
+      uses: actions/upload-artifact@v2
+      with:
+        name: NvimUnity-macOS
+        path: AppDir/NvimUnity.app
+
