@@ -52,7 +52,7 @@ jobs:
 
       # 5. Fazer upload do .dmg como artefato
       - name: Upload DMG artifact
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v3.1.2
         with:
           name: nvim-unity.dmg
           path: /tmp/nvim-unity.dmg
