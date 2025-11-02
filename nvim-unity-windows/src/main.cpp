@@ -49,16 +49,17 @@ int main(int argc, char* argv[]) {
 
     std::string file = "";
     std::string line = "1";
-
+    std::string nvim_path = "C:\\Program Files\\Neovim\\bin\\nvim.exe";
     if(argc > 1) {
         if(argv[1])
             file = argv[1];
         if(argv[2])
             line = argv[2];
+        if (argv[3])
+            nvim_path = argv[3];
     }
 
     std::string root = config.value("last_project", "");
-    std::string nvim_path = "C:\\Program Files\\Neovim\\bin\\nvim.exe";
     std::string socket = "\\\\.\\pipe\\unity2025";  
 
     std::string full_cmd;
